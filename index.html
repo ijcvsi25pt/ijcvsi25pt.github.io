@@ -160,6 +160,47 @@
             margin-bottom: 0.75rem;
             text-align: left;
         }
+
+        /* Modal */
+        .modal {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.6);
+          display: none;                 /* hidden by default */
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+          z-index: 2000;
+        }
+        .modal.show { display: flex; }
+
+        .modal-content {
+          background: #fff;
+          border-radius: 10px;
+          box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+          max-width: 900px;
+          width: min(92vw, 900px);
+          overflow: hidden;
+          position: relative;
+        }
+        .modal-content img {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+        .modal-close {
+          position: absolute;
+          top: .5rem;
+          right: .75rem;
+          border: 0;
+          background: transparent;
+          font-size: 2rem;
+          line-height: 1;
+          cursor: pointer;
+          color: #333;
+        }
+        body.noscroll { overflow: hidden; }
+  
         #submissions p {
             margin-bottom: 1.25rem;
         }
@@ -302,7 +343,13 @@
                 <p>Submitted papers should present original, unpublished work, relevant to one of the topics of the Special Issue.</p>
                 <p>All submitted papers will be evaluated on the basis of relevance, significance of contribution, technical quality, scholarship, and quality of presentation, by at least two independent reviewers. It is the policy of the journal that no submission, or substantially overlapping submission, be published or be under review at another journal or conference at any time during the review process.</p>
                 <p>Manuscripts must conform to the author guidelines available on the IJCV website at: <a href="https://link.springer.com/journal/11263/submission-guidelines" target="_blank" rel="noopener">IJCV Submission Guidelines</a>.</p>
-                <p><strong>Please choose <em>“S.I. : Fine-Tuning in Modern Machine Learning”</em> from the Article Type dropdown.</strong></p>
+                <p>
+                  <strong>
+                    <a href="#" id="open-article-type-modal">
+                      Please choose <em>“S.I. : Fine-Tuning in Modern Machine Learning”</em> from the Article Type dropdown.
+                    </a>
+                  </strong>
+                </p>
                 <a href="https://www.editorialmanager.com/visi" class="btn">Submit Your Paper</a>
             </div>
         </section>
@@ -364,6 +411,13 @@
         </div>
     </footer>
 
+    <div id="article-type-modal" class="modal" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="article-type-title">
+        <button class="modal-close" aria-label="Close modal">&times;</button>
+        <img src="selection-guide.png" alt="Screenshot of the Article Type dropdown highlighting 'S.I.: Fine-Tuning in Modern ML'">
+      </div>
+    </div>
+
     <script>
         const navbar = document.getElementById('navbar');
         const navLinks = document.querySelectorAll('#navbar ul li a');
@@ -389,6 +443,29 @@
                 }
             });
         };
+    </script>
+
+    <script>
+      (function () {
+        const openBtn = document.getElementById('open-article-type-modal');
+        const modal = document.getElementById('article-type-modal');
+        const closeBtn = modal.querySelector('.modal-close');
+
+        function openModal(e) {
+          if (e) e.preventDefault();
+          modal.classList.add('show');
+          document.body.classList.add('noscroll');
+        }
+        function closeModal() {
+          modal.classList.remove('show');
+          document.body.classList.remove('noscroll');
+        }
+
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+      })();
     </script>
 </body>
 </html>
