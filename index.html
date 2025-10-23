@@ -47,6 +47,26 @@
         .dates-grid div { padding: 0.5rem; }
         .dates-grid .date { font-weight: 700; color: var(--primary-color); font-family: 'Roboto', sans-serif; }
 
+        .student-credit {
+          margin-top: 2.5rem;       /* adds space above */
+          text-align: center;
+          color: #999;              /* soft gray text */
+          font-size: 0.9rem;
+          font-style: italic;
+        }
+
+        .student-credit a {
+          color: #999;              /* same color as text for subtle look */
+          text-decoration: none;
+          border-bottom: 1px dotted #bbb;  /* gentle underline effect */
+          transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .student-credit a:hover {
+          color: var(--primary-color);    /* highlight on hover */
+          border-color: var(--primary-color);
+        }
+
         .organizers-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(200px, 1fr));
@@ -334,7 +354,10 @@
                     </div>
                   </a>
                 </div>
-                <p>Student Assistant: Yuanhe Zhang</p>
+                <p class="student-credit">
+                  Student Assistant:
+                  <a href="https://yuanhez.github.io" target="_blank" rel="noopener">Yuanhe Zhang</a>
+                </p>
             </div>
         </section>
 
