@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IJCV Special Issue | Post-training for CV: Principles & Scalability</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --primary-color-hover: #0056b3;
+            --secondary-color: #f8f9fa;
+            --text-color: #343a40;
+            --heading-color: #212529;
+            --border-color: #dee2e6;
+            --header-height: 70px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+        body { font-family: 'Lato', sans-serif; line-height: 1.8; color: var(--text-color); background-color: #fff; }
+        .container { max-width: 960px; margin: auto; overflow: hidden; padding: 0 2rem; }
+        header { background: #fff; color: var(--heading-color); padding: 1rem 0; text-align: center; border-bottom: 1px solid var(--border-color); }
+        header h1 { font-family: 'Roboto', sans-serif; font-size: 2.2rem; margin-bottom: 0.25rem; font-weight: 700; }
+        header p { font-size: 1.1rem; color: var(--primary-color); font-weight: 500; }
+        #navbar { background: #fff; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-color); transition: box-shadow 0.3s ease-in-out; }
+        #navbar.scrolled { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        #navbar .container { display: flex; justify-content: center; align-items: center; }
+        #navbar ul { list-style: none; display: flex; gap: 2rem; }
+        #navbar ul li a { color: var(--text-color); text-decoration: none; font-weight: 700; font-family: 'Roboto', sans-serif; font-size: 1rem; padding: 0.5rem 0; transition: color 0.3s ease; position: relative; }
+        #navbar ul li a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; background-color: var(--primary-color); transition: all 0.3s ease-in-out; }
+        #navbar ul li a:hover, #navbar ul li a.active { color: var(--primary-color); }
+        #navbar ul li a:hover::after, #navbar ul li a.active::after { width: 100%; left: 0; }
+        section { padding: 4rem 0; }
+        section:nth-child(even) { background-color: var(--secondary-color); }
+        section h2 { font-family: 'Roboto', sans-serif; font-size: 2rem; text-align: center; margin-bottom: 2rem; color: var(--heading-color); position: relative; }
+        section h2::after { content: ''; display: block; width: 60px; height: 3px; background: var(--primary-color); margin: 0.5rem auto 0; }
+        #hero { background: var(--secondary-color); padding: 5rem 0; }
+        #hero .container p { font-size: 1.1rem; max-width: 800px; margin: 0.75rem auto 0; }
+        #cfp ul, .bullets ul { list-style: disc; margin-left: 2rem; }
+        #cfp li, .bullets li { margin-bottom: 0.5rem; }
+        .dates-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; align-items: center; max-width: 700px; margin: 0 auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .dates-grid div { padding: 0.5rem; }
+        .dates-grid .date { font-weight: 700; color: var(--primary-color); font-family: 'Roboto', sans-serif; }
+
+        .organizers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .organizer-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .organizer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .organizer-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary-color);
+        }
+        
+        .organizer-card h3 {
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 0.25rem;
+            color: var(--heading-color);
+        }
+        
+        .organizer-card p {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .organizer-link {
+            text-decoration: none;
+            color: inherit;
+            display: block; /* makes the link cover the whole card */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .organizer-link:hover .organizer-card {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: #fff;
+            padding: 0.8rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+            font-family: 'Roboto', sans-serif;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: var(--primary-color-hover);
+        }
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .links-grid a {
+            display: block;
+            background: #fff;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-family: 'Roboto', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .links-grid a:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
+        .ethics-note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1rem 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            font-style: italic;
+            color: #5c4400;
+        }
+        .ethics-note strong {
+            color: #8a6d00;
+        }
+        .ethics-list ul {
+            max-width: 85%;
+            margin: 1.5rem auto;
+            padding-left: 1.5rem;
+        }
+        .ethics-list li {
+            margin-bottom: 0.75rem;
+            text-align: left;
+        }
+        #submissions p {
+            margin-bottom: 1.25rem;
+        }
+        #submissions .container {
+            text-align: center;
+        }
+        #resources p {
+            margin-bottom: 1.25rem;
+        }
+        #ethics p {
+            margin-bottom: 1.25rem;
+        }
+        #submissions .container, #resources .container, #ethics .container { max-width: 860px; }
+        footer { background: var(--heading-color); color: #fff; text-align: center; padding: 2rem 0; }
+        footer a { color: #a3d0ff; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            #navbar ul { flex-direction: column; gap: 0.5rem; align-items: center; }
+            section { padding: 3rem 0; }
+            .container { padding: 0 1rem; }
+            .dates-grid { grid-template-columns: 1fr; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Post-Training in Large Language Models for Computer Vision</h1>
+            <p>A Special Issue of the International Journal of Computer Vision (IJCV)</p>
+        </div>
+    </header>
+
+    <nav id="navbar">
+        <div class="container">
+            <ul>
+                <li><a href="#about" class="active">About</a></li>
+                <li><a href="#cfp">Aim & Scope</a></li>
+                <li><a href="#topics">Topics</a></li>
+                <li><a href="#dates">Dates</a></li>
+                <li><a href="#organizers">Guest Editors</a></li>
+                <li><a href="#submissions">Submissions</a></li>
+                <li><a href="#resources">Author Resources</a></li>
+                <li><a href="#ethics">Ethics</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="container">
+             <h2>About the Special Issue</h2>
+             <p>Modern computer vision systems increasingly rely on large pretrained backbones (vision encoders, diffusion models, and vision–language models). The decisive gains for real-world use, however, often come after pretraining—through post-training such as fine-tuning (full or parameter-efficient), instruction/preference alignment, test-time/inference-time adaptation, model editing/unlearning, and reasoning-oriented procedures. This special issue invites innovative research papers that address the challenges of post-training and propose novel techniques that improve effectiveness, efficiency, and adaptability across recognition and generation tasks (e.g., image recognition, image generation, video understanding).</p>
+        </div>
+    </section>
+
+    <main>
+        <section id="cfp">
+            <div class="container">
+                <h2>Aim &amp; Scope</h2>
+                <p>We encourage submissions that cover a broad range of visual understanding and generation tasks, including but not limited to image classification, object detection, instance/semantic/panoptic segmentation, keypoint/pose estimation, action recognition, visual grounding and VQA, tracking, retrieval, captioning, image/video generation and editing, 3D perception and reconstruction, and embodied/robotic perception.</p>
+            </div>
+        </section>
+
+        <section id="topics" class="bullets">
+            <div class="container">
+                <h2>Potential Topics of Interest</h2>
+                <ul>
+                    <li><strong>Parameter-efficient adaptation:</strong> methods for adapters/LoRA, visual prompt tuning, soft/hard prompts, hypernetworks, and rank/structure selection that enable rapid specialization under tight compute and memory budgets.</li>
+                    <li><strong>Instruction &amp; preference tuning for vision/VLMs:</strong> techniques for building and using instruction datasets, pairwise/listwise preference learning (e.g., RL-free or RL-based objectives), and aligning models to human or task-specific criteria for recognition, localization, captioning, and generation.</li>
+                    <li><strong>Inference-time &amp; test-time adaptation:</strong> strategies that adapt on the fly—entropy/objective-driven updates, batch-norm or feature alignment, online/episodic adaptation, retrieval-augmented inference, self-consistency, verifier/rescorer pipelines, and dynamic prompt optimization.</li>
+                    <li><strong>Multi-modality, 3D, and temporal modeling:</strong> post-training across image–text–audio, video and action understanding, point clouds and meshes, 3D reconstruction, and cross-modal grounding.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="dates">
+            <div class="container">
+                <h2>Important Dates</h2>
+                <div class="dates-grid">
+                    <div class="date">July 15, 2026</div><div class="event">Submission deadline</div>
+                    <div class="date">November 15, 2026</div><div class="event">First review notification</div>
+                    <div class="date">February 15, 2027</div><div class="event">Revised submission deadline</div>
+                    <div class="date">May 15, 2027</div><div class="event">Final review notification</div>
+                    <div class="date">June 15, 2027</div><div class="event">Final manuscript due</div>
+                    <div class="date">Summer 2027</div><div class="event">Publication date</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="organizers">
+            <div class="container">
+                <h2>Guest Editors</h2>
+                <div class="organizers-grid">
+                  <a href="https://www.lfhsgre.org" target="_blank" rel="noopener" class="organizer-link">
+                    <div class="organizer-card">
+                        <img src="fanghui.png" alt="Editor 1 Photo">
+                        <h3>Fanghui Liu</h3>
+                        <p>University of Warwick, UK</p>
+                    </div>
+                  </a>
+
+                  <a href="https://grigoris.ece.wisc.edu" target="_blank" rel="noopener" class="organizer-link">
+                    <div class="organizer-card">
+                        <img src="chry.jpeg" alt="Editor 2 Photo">
+                        <h3>Grigorios Chrysos</h3>
+                        <p>University of Wisconsin–Madison, US</p>
+                    </div>
+                  </a>
+
+                  <a href="http://vision.jhu.edu/rvidal.html" target="_blank" rel="noopener" class="organizer-link">
+                    <div class="organizer-card">
+                        <img src="rene.jpg" alt="Editor 3 Photo">
+                        <h3>René Vidal</h3>
+                        <p>University of Pennsylvania, US</p>
+                    </div>
+                  </a>
+
+                  <a href="https://dr.ntu.edu.sg/entities/person/Tao-Dacheng" target="_blank" rel="noopener" class="organizer-link">
+                    <div class="organizer-card">
+                        <img src="tao.jpg" alt="Editor 4 Photo">
+                        <h3>Dacheng Tao</h3>
+                        <p>Nanyang Technological University</p>
+                    </div>
+                  </a>
+
+                  <a href="https://torrvision.com" target="_blank" rel="noopener" class="organizer-link">
+                    <div class="organizer-card">
+                        <img src="torr.jpg" alt="Editor 5 Photo">
+                        <h3>Philip Torr</h3>
+                        <p>University of Oxford, UK</p>
+                    </div>
+                  </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="submissions">
+            <div class="container">
+                <h2>Submission Guidelines</h2>
+                <p>Submitted papers should present original, unpublished work, relevant to one of the topics of the Special Issue.</p>
+                <p>All submitted papers will be evaluated on the basis of relevance, significance of contribution, technical quality, scholarship, and quality of presentation, by at least two independent reviewers. It is the policy of the journal that no submission, or substantially overlapping submission, be published or be under review at another journal or conference at any time during the review process.</p>
+                <p>Manuscripts must conform to the author guidelines available on the IJCV website at: <a href="https://link.springer.com/journal/11263/submission-guidelines" target="_blank" rel="noopener">IJCV Submission Guidelines</a>.</p>
+                <p><strong>Please choose <em>“S.I. : Fine-Tuning in Modern Machine Learning”</em> from the Article Type dropdown.</strong></p>
+                <a href="https://www.editorialmanager.com/visi" class="btn">Submit Your Paper</a>
+            </div>
+        </section>
+
+        <section id="resources">
+            <div class="container">
+                <h2>Author Resources</h2>
+                <p>Authors are encouraged to submit high-quality, original work that has neither appeared in, nor is under consideration by other journals.  Springer provides a host of information about publishing in a Springer Journal on our <a href="https://www.springer.com/gp/authors-editors/journal-author" target="_blank" rel="noopener">Journal Author Resources</a> page, including <a href="http://www.springer.com/gp/authors-editors/journal-author/frequently-asked-questions/3832" target="_blank" rel="noopener">FAQs</a>, <a href="https://www.springer.com/gp/authors-editors/journal-author/journal-author-academy" target="_blank" rel="noopener">Tutorials</a> along with <a href="https://support.springer.com/en/support/home" target="_blank" rel="noopener">Help and Support</a>.</p>
+                <p> </p>
+                <p>Other useful links for authors:</p>
+                <div class="links-grid">
+                    <a href="https://www.springer.com/gp/authors-editors/journal-author/journal-author-helpdesk/editorial-policies/14214" target="_blank">Editorial Policies</a>
+                    <a href="https://www.springer.com/gp/open-access/publication-policies" target="_blank">Publication Policies</a>
+                    <a href="https://www.springer.com/gp/open-access/publication-policies/copyright-transfer" target="_blank">Copyright Transfer</a>
+                    <a href="https://www.springer.com/gp/open-access/publication-policies/self-archiving-policy" target="_blank">Self-Archiving</a>
+                    <a href="https://www.springernature.com/gp/open-research/funding" target="_blank">OA Funding</a>
+                    <a href="https://www.springer.com/gp/open-access/springer-open-choice" target="_blank">Open Choice</a>
+                    <a href="https://www.springer.com/gp/open-access/publication-policies/funder-compliance" target="_blank">Funder Compliance</a>
+                    <a href="https://www.springer.com/gp/open-access/springer-open-choice/springer-compact" target="_blank">Read-and-Publish Agreements</a>
+                    <a href="https://www.springer.com/gp/open-access/preprint-sharing/16718886/" target="_blank">Preprint Sharing</a>
+                    <a href="https://www.springer.com/gp/authors-editors/journal-author/journal-author-helpdesk/submission/1302" target="_blank">My Publication Process</a>
+                    <a href="https://www.springer.com/gp/authors-editors/journal-author/journal-author-helpdesk/production/1288" target="_blank">Production</a>
+                    <a href="https://www.springer.com/gp/authors-editors/journal-author/journal-author-helpdesk/open-access-/1298" target="_blank">Publication</a>
+                    <a href="https://www.springer.com/gp/authors-editors/journal-author/journal-author-helpdesk/after-publication" target="_blank">Post-Publication</a>
+                    <a href="https://www.springernature.com/de/researchers/orcid" target="_blank">ORCID</a>
+                    <a href="https://www.springernature.com/gp/reviewers/publons" target="_blank">Publons</a>
+                    <a href="https://www.springernature.com/gp/researchers/sharedit" target="_blank">Article Sharing</a>
+                    <a href="https://www.springer.com/gp/authors-editors/journal-author/journal-author-helpdesk/citation-alert/18682" target="_blank">Citation Alerts</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="ethics">
+            <div class="container">
+                <h2>Ethical Responsibilities of Authors</h2>
+                <p>This journal is committed to upholding the integrity of the scientific record. As a member of the <a href="https://publicationethics.org/" target="_blank" rel="noopener">Committee on Publication Ethics (COPE)</a> the journal will follow the COPE guidelines on how to deal with potential acts of misconduct.</p>
+                <p> </p>
+                <p>Authors should refrain from misrepresenting research results which could damage the trust in the journal, the professionalism of scientific authorship, and ultimately the entire scientific endeavour. Maintaining integrity of the research and its presentation is helped by following the rules of good scientific practice, which include:</p>
+                <div class="ethics-list">
+                  <ul>
+                    <li>The manuscript should not be submitted to more than one journal for simultaneous consideration.</li>
+                    <li>The submitted work should be original and should not have been published elsewhere in any form or language (partially or in full), unless the new work concerns an expansion of previous work. (Please provide transparency on the re-use of material to avoid the concerns about text-recycling (‘self-plagiarism’).</li>
+                    <li>A single study should not be split up into several parts to increase the quantity of submissions and submitted to various journals or to one journal over time (i.e. ‘salami-slicing/publishing’).</li>
+                    <li>Concurrent or secondary publication is sometimes justifiable, provided certain conditions are met. Examples include: translations or a manuscript that is intended for a different group of readers.</li>
+                    <li>Results should be presented clearly, honestly, and without fabrication, falsification or inappropriate data manipulation (including image based manipulation). Authors should adhere to discipline-specific rules for acquiring, selecting and processing data.</li>
+                    <li>No data, text, or theories by others are presented as if they were the author’s own (‘plagiarism’). Proper acknowledgements to other works must be given (this includes material that is closely copied (near verbatim), summarized and/or paraphrased), quotation marks (to indicate words taken from another source) are used for verbatim copying of material, and permissions secured for material that is copyrighted.</li>
+                  </ul>
+                </div>
+                <div class="ethics-note">
+                    <strong>Important Note:</strong> the journal may use software to screen for plagiarism.For more information on the Ethical Responsibilities of authors, please visit <a href="https://link.springer.com/journal/11263/submission-guidelines" target="_blank" rel="noopener">the IJCV Submission guidelines</a>.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 International Journal of Computer Vision | For more information, visit the <a href="https://link.springer.com/journal/11263" target="_blank" rel="noopener">IJCV website</a>.</p>
+        </div>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.querySelectorAll('#navbar ul li a');
+        const sections = document.querySelectorAll('section');
+
+        window.onscroll = () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - navbar.offsetHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        };
+    </script>
+</body>
+</html>
